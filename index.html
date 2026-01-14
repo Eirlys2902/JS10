@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nhật Ký Mèo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Montserrat:wght@800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    
+    <style>
+        :root {
+            --ink: #4a3b2a;
+            --tape: rgba(225, 215, 195, 0.95);
+            --grid: rgba(101, 67, 33, 0.5); 
+            --bg-1: #fffbf0;
+            --bg-2: #e8dcb9;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            color: var(--ink);
+            font-family: 'Nunito', sans-serif;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow-x: hidden;
+            padding-bottom: 150px;
+            min-height: 100vh;
+            background-image: 
+                radial-gradient(var(--grid) 3px, transparent 3px),
+                linear-gradient(45deg, var(--grid) 2px, transparent 2px),
+                linear-gradient(-45deg, var(--grid) 2px, transparent 2px);
+            background-size: 30px 30px;
+            background-attachment: fixed;
+            background-color: transparent; 
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            background: linear-gradient(to bottom, var(--bg-1) 0%, var(--bg-2) 100%);
+        }
+
+        header {
+            margin: 80px 0 60px 0;
+            text-align: center;
+            background-color: rgba(255, 251, 240, 0.95);
+            backdrop-filter: blur(5px);
+            padding: 20px 60px;
+            border: 3px double #8d6e63;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+            transform: rotate(-1deg);
+            z-index: 10;
+            transition: transform 0.3s ease;
+        }
+
+        header:hover {
+            transform: rotate(0deg) scale(1.02);
+        }
+
+        h1 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 72px;
+            margin: 0;
+            color: #5d4037;
+            text-shadow: 2px 2px 0px rgba(0,0,0,0.05);
+        }
+
+        .sub {
+            font-size: 24px;
+            margin-top: 5px;
+            color: #6d4c41;
+            border-bottom: 2px dotted #8d6e63;
+            display: inline-block;
+        }
+
+        .wrap {
+            margin: 60px 0;
+            opacity: 0;
+            transition: all 0.8s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        .card {
+            position: relative;
+            width: 450px;
+            background: linear-gradient(to bottom right, #fffbf0, #f7f1e3);
+            padding: 15px 15px 70px 15px;
+            box-shadow: 
+                0 5px 15px rgba(60, 40, 20, 0.15),
+                0 15px 35px rgba(60, 40, 20, 0.1);
+            border: 1px solid #e0d0c0;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease;
+        }
+
+        .tape {
+            position: absolute;
+            top: -18px;
+            left: 50%;
+            transform: translateX(-50%) rotate(-2deg);
+            width: 130px;
+            height: 40px;
+            background-color: var(--tape);
+            background-image: repeating-linear-gradient(
+                -45deg,
+                transparent,
+                transparent 5px,
+                rgba(255, 255, 255, 0.3) 5px,
+                rgba(255, 255, 255, 0.3) 10px
+            );
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            z-index: 10;
+            opacity: 0.95;
+            transition: transform 0.3s ease;
+        }
+
+        .frame {
+            width: 100%;
+            height: 320px;
+            overflow: hidden;
+            border: 1px solid #dcdcdc;
+            filter: sepia(0.25) contrast(0.95) brightness(1.02);
+            transition: filter 0.4s ease;
+            position: relative;
+        }
+
+        .frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .cap {
+            position: absolute;
+            bottom: 15px;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            font-family: 'Dancing Script', cursive; 
+            font-size: 32px;
+            color: #4e342e;
+        }
+
+        .stamp {
+            position: absolute;
+            bottom: 60px;
+            right: 15px;
+            width: 70px;
+            height: 70px;
+            border: 3px dashed #c0392b;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 800;
+            color: #c0392b;
+            font-size: 14px;
+            transform: rotate(-15deg);
+            opacity: 0.7;
+            text-align: center;
+            line-height: 1.1;
+            mix-blend-mode: multiply;
+            transition: transform 0.3s ease;
+            background: rgba(255, 0, 0, 0.02);
+        }
+
+        .paw {
+            position: absolute;
+            color: #d7ccc8;
+            z-index: 5;
+            opacity: 0.8;
+            transform: rotate(20deg);
+        }
+
+        .tl {
+            top: -15px;
+            left: -15px;
+            font-size: 32px;
+        }
+
+        .br {
+            bottom: 10px;
+            right: 80px;
+            font-size: 24px;
+        }
+
+        .bl {
+            bottom: 15px;
+            left: 15px;
+            font-size: 32px;
+        }
+
+        .card:hover {
+            transform: rotate(0deg) scale(1.05) !important;
+            box-shadow: 0 20px 50px rgba(60, 40, 20, 0.25);
+            z-index: 20;
+            background-color: #fff;
+        }
+
+        .card:hover .frame {
+            filter: sepia(0) contrast(1) brightness(1.05);
+        }
+
+        .card:hover img {
+            transform: scale(1.1);
+        }
+
+        .card:hover .tape {
+            transform: translateX(-50%) scale(1.05);
+        }
+
+        .card:hover .stamp {
+            transform: rotate(0deg) scale(1.1);
+            opacity: 1;
+        }
+
+        .wrap:nth-child(odd) {
+            transform: translateX(-100px) translateY(50px);
+        }
+
+        .wrap:nth-child(even) {
+            transform: translateX(100px) translateY(50px);
+        }
+
+        .wrap.show {
+            opacity: 1;
+            transform: translateX(0) translateY(0);
+        }
+
+        .wrap:nth-of-type(1) .card {
+            transform: rotate(-2deg);
+        }
+
+        .wrap:nth-of-type(2) .card {
+            transform: rotate(3deg);
+        }
+
+        .wrap:nth-of-type(3) .card {
+            transform: rotate(-1deg);
+        }
+
+        .wrap:nth-of-type(4) .card {
+            transform: rotate(2deg);
+        }
+
+        .wrap:nth-of-type(5) .card {
+            transform: rotate(-3deg);
+        }
+
+        .wrap:nth-of-type(6) .card {
+            transform: rotate(1deg);
+        }
+
+        .wrap:nth-of-type(7) .card {
+            transform: rotate(-2deg);
+        }
+
+        @media (max-width: 600px) {
+            .card {
+                width: 90vw;
+                margin: 20px 0;
+            }
+            h1 {
+                font-size: 48px;
+            }
+        }
+    </style>
+</head>
+<body>
+    
+    <header>
+        <h1>Các giống mèo hiếm</h1>
+        <div class="sub">"meow"</div>
+    </header>
+
+    <div class="wrap">
+        <div class="card">
+            <div class="tape"></div>
+            <div class="frame">
+                <img src="./20151015-011756-2c9c6e845cd8e8bc717a26858a750a7c_600x632_29be19086c27421bb3cc6fdde63225fc_grande.jpg" alt="Mèo Peterbald">
+            </div>
+            <div class="cap">Mèo Peterbald</div>
+            <div class="stamp">CUTE<br>CAT</div>
+            <i class="fas fa-paw paw tl"></i>
+        </div>
+    </div>
+
+    <div class="wrap">
+        <div class="card">
+            <div class="tape"></div>
+            <div class="frame">
+                <img src="./20151015-012118-allerca-hypoallergenic-cat1_602x352_a886df7c632d4c298b4756f81896a56d_grande.jpg" alt="Mèo Allerca">
+            </div>
+            <div class="cap">Mèo Allerca</div>
+            <div class="stamp">CUTE<br>CAT</div>
+        </div>
+    </div>
+
+    <div class="wrap">
+        <div class="card">
+            <div class="tape"></div>
+            <div class="frame">
+                <img src="./meo-anh-long-ngan2_51dd5f1db1a4470686bf03cc6c89677b_grande.jpg" alt="Mèo Anh lông ngắn">
+            </div>
+            <div class="cap">Mèo Anh lông ngắn</div>
+            <div class="stamp">CUTE<br>CAT</div>
+            <i class="fas fa-paw paw br"></i>
+        </div>
+    </div>
+
+    <div class="wrap">
+        <div class="card">
+            <div class="tape"></div>
+            <div class="frame">
+                <img src="./meo-nga-mat-xanh-d-1_a2762ca1d61445e588a56205549ddbe1_grande.png" alt="Mèo Nga mắt xanh">
+            </div>
+            <div class="cap">Mèo Nga mắt xanh</div>
+            <div class="stamp">CUTE<br>CAT</div>
+        </div>
+    </div>
+
+    <div class="wrap">
+        <div class="card">
+            <div class="tape"></div>
+            <div class="frame">
+                <img src="./meo-savannah-rat-nang-dong_72de8eef4dbe4cfda1e42de63f6a5264_grande.jpg" alt="Mèo Savannah">
+            </div>
+            <div class="cap">Mèo Savannah</div>
+            <div class="stamp">CUTE<br>CAT</div>
+        </div>
+    </div>
+
+    <div class="wrap">
+        <div class="card">
+            <div class="tape"></div>
+            <div class="frame">
+                <img src="./meo-scottish_407d2d774be14a3396ed15c2e64e7e8a_grande.jpg" alt="Mèo Scottish tai cụp">
+            </div>
+            <div class="cap">Mèo Scottish tai cụp</div>
+            <div class="stamp">CUTE<br>CAT</div>
+        </div>
+    </div>
+
+    <div class="wrap">
+        <div class="card">
+            <div class="tape"></div>
+            <div class="frame">
+                <img src="./unnamed_926251635ca941fdbfc0376d4563e0e4_grande.jpg" alt="Mèo Ba Tư">
+            </div>
+            <div class="cap">Mèo Ba Tư</div>
+            <div class="stamp">CUTE<br>CAT</div>
+            <i class="fas fa-paw paw bl"></i>
+        </div>
+    </div>
+
+    <script>
+        const cards = document.querySelectorAll('.wrap');
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(e => {
+                if (e.isIntersecting) {
+                    e.target.classList.add('show');
+                } else {
+                    e.target.classList.remove('show');
+                }
+            });
+        }, { threshold: 0.15 });
+
+        cards.forEach(c => observer.observe(c));
+    </script>
+</body>
+</html>
